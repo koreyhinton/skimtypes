@@ -5,7 +5,7 @@ So far bit is the only type and has a very Alpha/experimental status.
 This product is provided as-is with no guarantees, licensed with MIT license
 (see LICENSE file).
 
-Last test run status: 30 Tests Pass, 0 Fail
+Test status: Check results at [skimtypesTests/README.md](skimtypesTests/README.md)
 
 ## bit
 

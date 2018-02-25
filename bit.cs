@@ -123,6 +123,106 @@ namespace skimtypes
             return obj._intVal == this._intVal;
         }
 
+        // Parse Methods:
+
+        public static bit Parse(string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+            bit parsed;
+            if (TryParse(str, out parsed))
+                return parsed;
+            throw new FormatException("Unable to parse as bit, string given: " + str);
+        }
+
+        public static bit TryParse(string str, out bit outBit)
+        {
+            outBit = default(bit);
+            if (str == null)
+                return 0;
+
+            int strLen = str.Length;
+
+            // skip leading whitespace
+            int i = 0;
+            for (; i<strLen; i++)
+            {
+                if (!char.IsWhiteSpace(str[i]))
+                    break;
+            }
+
+            strLen -= (i);
+
+            const string trueStr = "true";
+            const string falseStr = "false";
+            int trueLen = trueStr.Length;
+            int falseLen = falseStr.Length;
+
+            if (strLen >= trueLen && str.Substring(i, trueLen).ToLower() == trueStr)
+            {
+                i += trueLen;
+                strLen -= trueLen;
+                string remainingStr = str.Substring(i, strLen);
+                if (string.IsNullOrWhiteSpace(remainingStr))
+                {
+                    outBit = 1;
+                    return 1;
+                }
+                return 0;
+            }
+
+            if (strLen >= falseLen && str.Substring(i, falseLen).ToLower() == falseStr)
+            {
+                i += falseLen;
+                strLen -= falseLen;
+                string remainingStr = str.Substring(i, strLen);
+                if (string.IsNullOrWhiteSpace(remainingStr))
+                {
+                    outBit = 0;
+                    return 1;
+                }
+                return 0;
+            }
+
+            // at this point only whitespace, 0, or 1 is allowed but 1 has to be the last number
+            strLen = str.Length;//reset it back to the full length of the string to satisfy for condition
+            int lastNumber = 0;
+            bool found0 = false;
+            for (; i < strLen; i++)
+            {
+                char c = str[i];
+                switch (c)
+                {
+                    case '0':
+                    {
+                        if (lastNumber==1)
+                            return 0;//0 can't come after 1
+                        found0 = true;
+                        break;
+                    }
+                    case '1':
+                    {
+                        lastNumber = 1;
+                        break;
+                    }
+                    default:
+                    {
+                        if (!char.IsWhiteSpace(c))
+                            return 0;// any non-whitespace character that isn't a 1 or a 0 fails
+                        break;
+                    }
+                }
+            }
+            // making it here assumes one of these happened:
+            // (1) all whitespace characters => fail
+            // (2) all 0s except for whitespace => pass
+            // (3) last is a 1 (except for whitespace) with optional preceding 0s => pass
+            if (!found0 && lastNumber !=1)
+                return 0;//only whitespace fails
+            outBit = lastNumber==1;
+            return 1;
+        }
+
         //NOT REALLY SUPPORTED OPERATION:
         public override int GetHashCode()
         {
