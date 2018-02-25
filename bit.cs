@@ -9,7 +9,7 @@ namespace skimtypes
     }
     //TODO: Parse, TryParse
     [DebuggerDisplay("{_intVal}")]
-    public class bit
+    public struct bit
     {
         private int _intVal;//starts as 0, and can only ever be 0 or 1
 
