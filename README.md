@@ -1,3 +1,46 @@
+Proof of Concept : Skim String
+
+Be able to do string comparisons in a human-readable way, using string
+concatenators that "skim" through certain parts of the string.
+
+Let's say `ws` is a symbol for whitespace, the concatenator can either be in
+the form of optional [ws] or required: <ws>.
+
+A string with optional leading and trailing whitespace might look like this:
+
+```c
+"[ws]Hello World[ws]"
+```
+
+What would be useful is to compare strings in a readable way, and while I first
+thought of creating a SkimString type it probably might be best to do string
+extension methods.
+
+Maybe being able to do something like this:
+
+```c
+//someInputString = "Hello World";
+if (someInputString.SkimsTo("Hello<ws>World"))
+{
+    Console.WriteLine("Success");
+}
+```
+
+Other concatenators might be:
+      [tab] => \t,
+      [nl]  => \n,
+      [es]  => ""
+
+Since this hopefully might be useful for readable text parsing code, it might
+be good to have a case-insensitive skim:
+
+```c
+if (someString.SkimsTo("SELECT", SkimType.CaseInsensitive))
+    /*...*/;
+```
+
+But that's pretty verbose.
+
 # skimtypes
 
 So far bit is the only type and has a very Alpha/experimental status.
