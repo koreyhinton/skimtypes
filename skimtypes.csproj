@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="bit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkimString.cs" />
+    <Compile Include="SkimTokenization\SkimToken.cs" />
+    <Compile Include="SkimTokenization\SkimTokenizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
